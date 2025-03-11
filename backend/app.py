@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 
@@ -7,6 +8,7 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)  
 
 # Database Configuration
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
@@ -14,9 +16,9 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
-# ✅ Import and Register Task Routes
+# Import and register routes
 from routes.task_routes import task_routes
-app.register_blueprint(task_routes)  # Ensure this line exists
+app.register_blueprint(task_routes)
 
 @app.route("/", methods=["GET"])
 def home():
